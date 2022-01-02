@@ -7,10 +7,11 @@ from random import random
 @ti.data_oriented
 class Mpm:
     def __init__(self, filepath, quality=1):
-        """[summary]
+        """Initializes an MPM object based on an image.
 
         Args:
-            quality (int, optional): [description]. Defaults to 1.
+            filepath (str): Path to the image file.
+            quality (int, optional): Simulation quality. Defaults to 1.
         """
         # material types
         self.MATERIAL_LIQUID = 0
@@ -70,11 +71,22 @@ class Mpm:
                     break
 
     def step(self, timestep, omega):
+        """Runs MPM simulation for a given timestep with omega as angular velocity.
+
+        Args:
+            timestep (float): Timestep.
+            omega (float): Angular velocity of the kaleidoscope's cap.
+        """
         for _ in range(int(timestep // self.dt)):
             self.substep(omega)
 
     @ti.kernel
     def substep(self, omega: float):
+        """Runs MPM simulation for a substep with omega as angular velocity.
+
+        Args:
+            omega (float): Angular velocity of the kaleidoscope's cap.
+        """
         # reset grids
         for i, j in self.grid_m:
             self.grid_m[i, j] = 0
