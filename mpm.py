@@ -66,7 +66,7 @@ class Mpm:
                     self.material[p] = 1
                     self.color_id[p] = self.palette.index(color_hex)
                     for channel in range(3):
-                        self.color[p][channel] = color_rgb[channel]
+                        self.color[p][channel] = color_rgb[channel] / 255.0
                     break
 
     def step(self, timestep, omega):
