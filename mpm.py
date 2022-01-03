@@ -34,6 +34,9 @@ class Mpm:
         self.g = ti.Vector([0.0, -9.8])  # gravitational acceleration
         self.mu_boundary = 0.8  # mu at boundary
 
+        # cap angle
+        self.theta = ti.field(float, ())
+
         # particles
         self.x = ti.Vector.field(2, float, self.particle_count)  # position
         self.v = ti.Vector.field(2, float, self.particle_count)  # velocity
@@ -79,6 +82,7 @@ class Mpm:
         """
         for _ in range(int(timestep // self.dt)):
             self.substep(omega)
+            self.theta[None] += self.dt * omega
 
     @ti.kernel
     def substep(self, omega: float):
@@ -149,10 +153,11 @@ class Mpm:
                 if dpos.norm() >= 0.5 and dpos.dot(self.grid_v[i, j]) > 0:
                     v_radial = dpos.dot(self.grid_v[i, j]) / dpos.norm()
                     v_tangential = dpos.cross(self.grid_v[i, j]) / dpos.norm()
-                    if omega > v_tangential:
-                        v_tangential = ti.min(omega, v_tangential + self.mu_boundary * v_radial)
+                    v_boundary = omega / 2
+                    if v_boundary > v_tangential:
+                        v_tangential = ti.min(v_boundary, v_tangential + self.mu_boundary * v_radial)
                     else:
-                        v_tangential = ti.max(omega, v_tangential - self.mu_boundary * v_radial)
+                        v_tangential = ti.max(v_boundary, v_tangential - self.mu_boundary * v_radial)
                     self.grid_v[i, j] = ti.Matrix([[0, -1], [1, 0]]) @ dpos / dpos.norm() * v_tangential
 
         # grid to particle (G2P)
