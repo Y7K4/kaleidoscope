@@ -18,20 +18,9 @@
 
 ## 成功效果展示
 
-TODO
+!![demo](demo.gif)
 
 ## 整体结构
-
-```
-.
-├── LICENSE
-├── main.py
-├── mpm.py
-├── obj.png
-├── README.md
-├── reflect.py
-└── requirements.txt
-```
 
 `mpm.py` 中参考 [mpm99](https://github.com/taichi-dev/taichi/blob/master/python/taichi/examples/simulation/mpm99.py) 实现了 MPM 类，增加了从图片导入装饰物初态，镜筒旋转带动装饰物等功能。
 
@@ -51,7 +40,7 @@ python3 main.py
 ```
 
 在运行过程中，
-* 按 SPACE 键可以在原像（万花筒cap部分内的物体）与像（万花筒成像的视觉效果）之间切换。
+* 按 SPACE 键可以在原像（万花筒内装饰物）与像（万花筒成像的视觉效果）之间切换。
 * 按 LEFT/RIGHT 键可以调整万花筒筒底转速。
 * 按 ESCAPE 键可以退出程序。
 
